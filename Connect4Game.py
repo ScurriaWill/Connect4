@@ -133,6 +133,9 @@ while not game_over:
                         screen.blit(label, (40, 10))
                         game_over = True
 
+                else:
+                    turn -= 1
+
             # Ask for Player 2 Input
             else:
                 posX = event.pos[0]
@@ -146,6 +149,9 @@ while not game_over:
                         label = myFont.render("Player 2 wins!!", True, YELLOW)
                         screen.blit(label, (40, 10))
                         game_over = True
+
+                else:
+                    turn -= 1
 
             # print_board(board)
             draw_board(board)
