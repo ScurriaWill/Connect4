@@ -80,7 +80,7 @@ def draw_board(b):
 
 
 board = create_board()
-print_board(board)
+# print_board(board)
 game_over = False
 turn = 0
 
@@ -147,7 +147,7 @@ while not game_over:
                         screen.blit(label, (40, 10))
                         game_over = True
 
-            print_board(board)
+            # print_board(board)
             draw_board(board)
 
             turn += 1
