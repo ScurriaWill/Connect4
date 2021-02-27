@@ -1,7 +1,7 @@
 class WillAI:
     def make_move(self, board):
         # TODO: add AI here
-        return 1
+        return 0
 
     @staticmethod
     def will_ai():

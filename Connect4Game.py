@@ -15,7 +15,7 @@ YELLOW = (255, 255, 0)
 ROW_COUNT = 6
 COLUMN_COUNT = 7
 
-usingAI = False
+usingAI = True
 
 
 def create_board():
@@ -90,7 +90,7 @@ game_over = False
 turn = random.randint(0, 1)
 will_ai = WillAI()
 griffin_ai = GriffinAI()
-ai_turn_time = 2000  # in ms
+ai_turn_time = 750  # in ms
 
 pygame.init()
 
@@ -107,7 +107,7 @@ screen = pygame.display.set_mode(size)
 draw_board(board)
 pygame.display.update()
 
-myFont = pygame.font.SysFont("monospace", 75)
+myFont = pygame.font.SysFont("monospace", 60)
 
 while not game_over:
 
@@ -184,7 +184,7 @@ while not game_over:
                 drop_piece(board, row, col, 1)
 
                 if winning_move(board, 1):
-                    label = myFont.render("Will's AI wins!!", True, RED)
+                    label = myFont.render("Will's AI wins!!", True, RED, BLACK)
                     screen.blit(label, (40, 10))
                     game_over = True
 
@@ -199,13 +199,12 @@ while not game_over:
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
-
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
                 drop_piece(board, row, col, 2)
 
                 if winning_move(board, 2):
-                    label = myFont.render("Griffin's AI wins!!", True, YELLOW)
+                    label = myFont.render("Griffin's AI wins!!", True, YELLOW, BLACK)
                     screen.blit(label, (40, 10))
                     game_over = True
 
