@@ -1,8 +1,8 @@
-class WillAI:
+class GriffinAI:
     def make_move(self, board):
         # TODO: add AI here
         return 1
 
     @staticmethod
-    def will_ai():
-        name = "WillAI"
+    def griffin_ai():
+        name = "GriffinAI"

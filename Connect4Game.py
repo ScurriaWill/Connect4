@@ -4,6 +4,9 @@ import sys
 import math
 import random
 
+from GriffinAI import GriffinAI
+from WillAI import WillAI
+
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
@@ -12,7 +15,7 @@ YELLOW = (255, 255, 0)
 ROW_COUNT = 6
 COLUMN_COUNT = 7
 
-usingAI = False
+usingAI = True
 
 
 def create_board():
@@ -83,9 +86,10 @@ def draw_board(b):
 
 
 board = create_board()
-# print_board(board)
 game_over = False
 turn = random.randint(0, 1)
+will_ai = WillAI()
+griffin_ai = GriffinAI()
 
 pygame.init()
 
@@ -123,7 +127,6 @@ while not game_over:
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARE_SIZE))
-                # print(event.pos)
                 # Ask for Player 1 Input
                 if turn == 0:
                     posX = event.pos[0]
@@ -158,7 +161,6 @@ while not game_over:
                     else:
                         turn -= 1
 
-                # print_board(board)
                 draw_board(board)
 
                 turn += 1
@@ -170,8 +172,7 @@ while not game_over:
     if usingAI:
 
         if turn == 0:
-            # TODO: implement AI here
-            col = 1
+            col = will_ai.make_move(board)
 
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
@@ -187,8 +188,7 @@ while not game_over:
 
         # Ask for Player 2 Input
         else:
-            # TODO: implement AI here
-            col = 0
+            col = griffin_ai.make_move(board)
 
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
@@ -202,7 +202,6 @@ while not game_over:
             else:
                 turn -= 1
 
-        # print_board(board)
         draw_board(board)
 
         turn += 1
