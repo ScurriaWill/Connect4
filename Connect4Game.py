@@ -4,8 +4,8 @@ import sys
 import math
 import random
 
-from GriffinAI import GriffinAI
-from WillAI import WillAI
+import GriffinAI
+import WillAI
 
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
@@ -88,8 +88,6 @@ def draw_board(b):
 board = create_board()
 game_over = False
 turn = random.randint(0, 1)
-will_ai = WillAI()
-griffin_ai = GriffinAI()
 ai_turn_time = 750  # in ms
 
 pygame.init()
@@ -175,7 +173,8 @@ while not game_over:
         if turn == 0:
             start_time = pygame.time.get_ticks()
             end_time = start_time + ai_turn_time
-            col = will_ai.make_move(board)
+            print_board(board)
+            col = WillAI.return_move(board)
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
@@ -195,7 +194,7 @@ while not game_over:
         else:
             start_time = pygame.time.get_ticks()
             end_time = start_time + ai_turn_time
-            col = griffin_ai.make_move(board)
+            col = GriffinAI.return_move(board)
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 

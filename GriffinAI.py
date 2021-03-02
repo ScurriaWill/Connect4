@@ -1,8 +1,5 @@
-class GriffinAI:
-    def make_move(self, board):
-        # TODO: add AI here
-        return 1
+import random
 
-    @staticmethod
-    def griffin_ai():
-        name = "GriffinAI"
+
+def return_move(board):
+    return random.randint(0, 7)
