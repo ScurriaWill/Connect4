@@ -12,10 +12,11 @@ BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
-ROW_COUNT = 6
-COLUMN_COUNT = 7
+ROW_COUNT = 6  # normally 6
+COLUMN_COUNT = 7  # normally 7
 
 usingAI = True
+ai_max_time = 10000
 
 
 def create_board():
@@ -89,10 +90,13 @@ board = create_board()
 game_over = False
 turn = random.randint(0, 1)
 ai_turn_time = 750  # in ms
+ai_1_owner = "Will"
+ai_2_owner = "Griffin"
 
 pygame.init()
 
-SQUARE_SIZE = 100
+scalar = 1
+SQUARE_SIZE = int(100 * scalar)  # normally 100
 
 width = COLUMN_COUNT * SQUARE_SIZE
 height = (ROW_COUNT + 1) * SQUARE_SIZE
@@ -105,7 +109,7 @@ screen = pygame.display.set_mode(size)
 draw_board(board)
 pygame.display.update()
 
-myFont = pygame.font.SysFont("monospace", 60)
+myFont = pygame.font.SysFont("monospace", int(60 * scalar))
 
 while not game_over:
 
@@ -178,12 +182,15 @@ while not game_over:
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
+            if pygame.time.get_ticks() > start_time + ai_max_time:
+                col = random.randint(0, 7)
+
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
                 drop_piece(board, row, col, 1)
 
                 if winning_move(board, 1):
-                    label = myFont.render("Will's AI wins!!", True, RED, BLACK)
+                    label = myFont.render(ai_1_owner + "'s AI wins!!", True, RED, BLACK)
                     screen.blit(label, (40, 10))
                     game_over = True
 
@@ -198,12 +205,15 @@ while not game_over:
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
+            if pygame.time.get_ticks() > start_time + ai_max_time:
+                col = random.randint(0, 7)
+
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
                 drop_piece(board, row, col, 2)
 
                 if winning_move(board, 2):
-                    label = myFont.render("Griffin's AI wins!!", True, YELLOW, BLACK)
+                    label = myFont.render(ai_2_owner + "'s AI wins!!", True, YELLOW, BLACK)
                     screen.blit(label, (40, 10))
                     game_over = True
 
