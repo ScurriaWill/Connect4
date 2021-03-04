@@ -14,6 +14,7 @@ YELLOW = (255, 255, 0)
 
 ROW_COUNT = 6  # normally 6
 COLUMN_COUNT = 7  # normally 7
+cont_spaces_to_win = 4
 
 usingAI = True
 ai_max_time = 10000
@@ -43,6 +44,7 @@ def print_board(b):
 
 
 def winning_move(b, piece):
+    # TODO: make method handle games with longer sequences to win
     # Check horizontal locations for win
     for c in range(COLUMN_COUNT - 3):
         for r in range(ROW_COUNT):
@@ -177,8 +179,7 @@ while not game_over:
         if turn == 0:
             start_time = pygame.time.get_ticks()
             end_time = start_time + ai_turn_time
-            print_board(board)
-            col = WillAI.return_move(board)
+            col = WillAI.return_move(board, cont_spaces_to_win)
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
@@ -201,7 +202,7 @@ while not game_over:
         else:
             start_time = pygame.time.get_ticks()
             end_time = start_time + ai_turn_time
-            col = GriffinAI.return_move(board)
+            col = GriffinAI.return_move(board, cont_spaces_to_win)
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 

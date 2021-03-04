@@ -1,6 +1,7 @@
 import copy
-import random
+import sys
 
+DEPTH = 5
 WILL_AI_PIECE = 1
 OPP_PIECE = 2
 WINDOW_LENGTH = 4
@@ -9,41 +10,40 @@ COLUMN_COUNT = 7
 EMPTY = 0
 
 
-def return_move(b):
+def return_move(b, num_win):
     global ROW_COUNT, COLUMN_COUNT, WINDOW_LENGTH, WILL_AI_PIECE, OPP_PIECE, EMPTY
     ROW_COUNT = len(b)
     COLUMN_COUNT = len(b[0])
-    WINDOW_LENGTH = 4
+    WINDOW_LENGTH = num_win
     WILL_AI_PIECE = 1
     OPP_PIECE = 2
     EMPTY = 0
     board = copy.deepcopy(b)
-    col, minimax_score = minimax(board, 5, -float('inf'), float('inf'), True)
+    col, minimax_score = minimax(board, DEPTH, -sys.maxsize, sys.maxsize, True)
     return col
 
 
 def minimax(board, depth, alpha, beta, maximizing_player):
-    valid_locations = get_valid_locations(board)
     is_terminal = is_terminal_node(board)
     if depth == 0 or is_terminal:
         if is_terminal:
             if winning_move(board, WILL_AI_PIECE):
-                return None, float('inf')
+                return None, sys.maxsize
             elif winning_move(board, OPP_PIECE):
-                return None, -float('inf')
+                return None, -sys.maxsize
             else:  # Game is over, no more valid moves
                 return None, 0
         else:  # Depth is zero
             return None, score_position(board, WILL_AI_PIECE)
+    valid_locations = get_valid_locations(board)
     if maximizing_player:
-        value = -float('inf')
-        column = random.choice(valid_locations)
+        value = -sys.maxsize
+        column = valid_locations[0]
         for col in valid_locations:
             row = get_next_open_row(board, col)
             b_copy = board.copy()
             drop_piece(b_copy, row, col, WILL_AI_PIECE)
-            min_max = minimax(b_copy, depth-1, alpha, beta, False)
-            new_score = min_max[1]
+            new_score = minimax(b_copy, depth-1, alpha, beta, False)[1]
             if new_score > value:
                 value = new_score
                 column = col
@@ -53,8 +53,8 @@ def minimax(board, depth, alpha, beta, maximizing_player):
         return column, value
 
     else:  # Minimizing player
-        value = float('inf')
-        column = random.choice(valid_locations)
+        value = sys.maxsize
+        column = valid_locations[0]
         for col in valid_locations:
             row = get_next_open_row(board, col)
             b_copy = board.copy()
@@ -153,12 +153,15 @@ def winning_move(board, piece):
 
 
 def is_valid_location(board, col):
+    if 0 > col or col > COLUMN_COUNT - 1:
+        return False
     return board[ROW_COUNT-1][col] == 0
 
 
 def get_valid_locations(board):
     valid_locations = []
-    for col in range(COLUMN_COUNT):
+    for i in range(COLUMN_COUNT):
+        col = int(COLUMN_COUNT // 2 + (1 - 2 * (i % 2)) * (i + 1) / 2)
         if is_valid_location(board, col):
             valid_locations.append(col)
     return valid_locations
