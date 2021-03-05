@@ -1,7 +1,7 @@
 import copy
 import sys
 
-DEPTH = 5
+DEPTH = 7
 WILL_AI_PIECE = 1
 OPP_PIECE = 2
 WINDOW_LENGTH = 4
@@ -10,7 +10,7 @@ COLUMN_COUNT = 7
 EMPTY = 0
 
 
-def return_move(b, num_win):
+def return_move(b, num_win, num_moves):
     global ROW_COUNT, COLUMN_COUNT, WINDOW_LENGTH, WILL_AI_PIECE, OPP_PIECE, EMPTY
     ROW_COUNT = len(b)
     COLUMN_COUNT = len(b[0])
@@ -20,7 +20,44 @@ def return_move(b, num_win):
     EMPTY = 0
     board = copy.deepcopy(b)
     col, minimax_score = minimax(board, DEPTH, -sys.maxsize, sys.maxsize, True)
+    # col, negamax_score = negamax(board, DEPTH, -sys.maxsize, sys.maxsize, True, num_moves)
     return col
+
+
+def negamax(board, depth, alpha, beta, is_will_ai, num_moves):
+    is_terminal = is_terminal_node(board)
+    if depth == 0 or is_terminal:
+        if is_terminal:
+            if winning_move(board, WILL_AI_PIECE if is_will_ai else OPP_PIECE):
+                return None, sys.maxsize if is_will_ai else -sys.maxsize
+            else:  # Game is over, no more valid moves
+                return None, 0
+        else:  # Depth is zero
+            return None, score_position(board, WILL_AI_PIECE)
+
+    temp = (COLUMN_COUNT * ROW_COUNT - 1 - num_moves) // 2
+    if beta > temp:
+        beta = temp
+        if alpha >= beta:
+            return beta
+
+    valid_locations = get_valid_locations(board)
+    column = valid_locations[0]
+    for col in valid_locations:
+        row = get_next_open_row(board, col)
+        b_copy = board.copy()
+        moves_copy = num_moves
+        drop_piece(b_copy, row, col, WILL_AI_PIECE if is_will_ai else OPP_PIECE)
+        moves_copy += 1
+        new_score = -negamax(b_copy, depth - 1, -alpha, -beta, not is_will_ai, moves_copy)[1]
+
+        if new_score >= beta:
+            return col, new_score
+        if new_score > alpha:
+            alpha = new_score
+            column = col
+
+    return column, alpha
 
 
 def minimax(board, depth, alpha, beta, maximizing_player):
