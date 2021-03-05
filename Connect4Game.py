@@ -102,6 +102,7 @@ SQUARE_SIZE = int(100 * scalar)  # normally 100
 
 width = COLUMN_COUNT * SQUARE_SIZE
 height = (ROW_COUNT + 1) * SQUARE_SIZE
+num_moves = 0
 
 size = (width, height)
 
@@ -140,6 +141,7 @@ while not game_over:
                     if is_valid_location(board, col):
                         row = get_next_open_row(board, col)
                         drop_piece(board, row, col, 1)
+                        num_moves += 1
 
                         if winning_move(board, 1):
                             label = myFont.render("Player 1 wins!!", True, RED)
@@ -157,6 +159,7 @@ while not game_over:
                     if is_valid_location(board, col):
                         row = get_next_open_row(board, col)
                         drop_piece(board, row, col, 2)
+                        num_moves += 1
 
                         if winning_move(board, 2):
                             label = myFont.render("Player 2 wins!!", True, YELLOW)
@@ -179,16 +182,18 @@ while not game_over:
         if turn == 0:
             start_time = pygame.time.get_ticks()
             end_time = start_time + ai_turn_time
-            col = WillAI.return_move(board, cont_spaces_to_win)
+            col = WillAI.return_move(board, cont_spaces_to_win, num_moves)
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
             if pygame.time.get_ticks() > start_time + ai_max_time:
                 col = random.randint(0, 7)
+                print(ai_1_owner + "'s AI took too long and got penalized with a random move")
 
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
                 drop_piece(board, row, col, 1)
+                num_moves += 1
 
                 if winning_move(board, 1):
                     label = myFont.render(ai_1_owner + "'s AI wins!!", True, RED, BLACK)
@@ -208,10 +213,12 @@ while not game_over:
 
             if pygame.time.get_ticks() > start_time + ai_max_time:
                 col = random.randint(0, 7)
+                print(ai_2_owner + "'s AI took too long and got penalized with a random move")
 
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
                 drop_piece(board, row, col, 2)
+                num_moves += 1
 
                 if winning_move(board, 2):
                     label = myFont.render(ai_2_owner + "'s AI wins!!", True, YELLOW, BLACK)
