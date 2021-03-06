@@ -1,7 +1,7 @@
 import copy
 import sys
 
-DEPTH = 7
+DEPTH = 5
 WILL_AI_PIECE = 1
 OPP_PIECE = 2
 WINDOW_LENGTH = 4
@@ -39,7 +39,7 @@ def negamax(board, depth, alpha, beta, is_will_ai, num_moves):
     if beta > temp:
         beta = temp
         if alpha >= beta:
-            return beta
+            return None, beta
 
     valid_locations = get_valid_locations(board)
     column = valid_locations[0]
