@@ -189,7 +189,7 @@ while not game_over:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
             if pygame.time.get_ticks() > start_time + ai_max_time:
-                col = random.randint(0, 7)
+                col = random.randint(0, 6)
                 print(ai_1_owner + "'s AI took too long and got penalized with a random move")
 
             if is_valid_location(board, col):
@@ -214,7 +214,7 @@ while not game_over:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
             if pygame.time.get_ticks() > start_time + ai_max_time:
-                col = random.randint(0, 7)
+                col = random.randint(0, 6)
                 print(ai_2_owner + "'s AI took too long and got penalized with a random move")
 
             if is_valid_location(board, col):
