@@ -30,6 +30,8 @@ def drop_piece(b, r, c, piece):
 
 
 def is_valid_location(b, c):
+    if c >= COLUMN_COUNT or c < 0:
+        return False
     return b[ROW_COUNT - 1][c] == 0
 
 
@@ -207,7 +209,7 @@ while not game_over:
         else:
             start_time = pygame.time.get_ticks()
             end_time = start_time + ai_turn_time
-            col = GriffinAI.return_move(board, cont_spaces_to_win)
+            col = GriffinAI.get_move(board, 2)
             if pygame.time.get_ticks() < end_time:
                 pygame.time.wait(end_time - pygame.time.get_ticks())
 
